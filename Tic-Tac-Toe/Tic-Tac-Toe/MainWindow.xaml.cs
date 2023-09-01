@@ -20,9 +20,25 @@ namespace Tic_Tac_Toe
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Variables
+
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+
+            StartNewGame();
+        }
+        #endregion
+
+        void StartNewGame()
+        {
+
         }
     }
 }

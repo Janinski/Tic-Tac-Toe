@@ -3,10 +3,38 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Tic_Tac_Toe"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        ResizeMode="NoResize"
+        Title="Tic Tac Toe" Height="500" Width="500">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="BorderThickness" Value="0.5"></Setter>
+            <Setter Property="FontSize" Value="70"></Setter>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="playground">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
 
+        <Button x:Name="btn00" Grid.Column="0" Grid.Row="0" Content="X"></Button>
+        <Button x:Name="btn10" Grid.Column="1" Grid.Row="0"></Button>
+        <Button x:Name="btn20" Grid.Column="2" Grid.Row="0"></Button>
+
+        <Button x:Name="btn01" Grid.Column="0" Grid.Row="1"></Button>
+        <Button x:Name="btn11" Grid.Column="1" Grid.Row="1"></Button>
+        <Button x:Name="btn21" Grid.Column="2" Grid.Row="1"></Button>
+
+        <Button x:Name="btn02" Grid.Column="0" Grid.Row="2"></Button>
+        <Button x:Name="btn12" Grid.Column="1" Grid.Row="2"></Button>
+        <Button x:Name="btn22" Grid.Column="2" Grid.Row="2"></Button>
     </Grid>
 </Window>
