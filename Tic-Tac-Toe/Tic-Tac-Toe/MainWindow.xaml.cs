@@ -62,7 +62,6 @@ namespace Tic_Tac_Toe
                 // Clear every cell and set default design of field
                 button.Content = string.Empty;
                 button.Background = Brushes.White;
-                button.Foreground = Brushes.Red;
             });
 
             // Make sure game starts and isn't finished yet
@@ -104,8 +103,126 @@ namespace Tic_Tac_Toe
             // Set button text
             button.Content = player1Turn ? "X" : "O";
 
+            // Change circle fields to rosa and cross fields to blue
+            if (!player1Turn)
+            {
+                button.Foreground = Brushes.LightPink;
+            }
+            else
+            {
+                button.Foreground = Brushes.LightGreen;
+            }
+
             // Toggle the players turns
             player1Turn ^= true;
+
+            CheckForAWinner();
+        }
+
+        /// <summary>
+        /// Checks if there is a winner of a three line straight
+        /// </summary>
+        private void CheckForAWinner()
+        {
+            #region Horizontal Wins
+            // Checks for hotizontal wins
+            // Row 0
+            if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[1] & currentGameState[2]) == currentGameState[0]){
+                // Game ends
+                gameEnded = true;
+
+                // Highlight winning cells
+                btn00.Background = btn10.Background = btn20.Background = Brushes.DarkGreen;
+            }
+
+            // Row 2
+            if (currentGameState[3] != FieldSign.Free && (currentGameState[3] & currentGameState[4] & currentGameState[5]) == currentGameState[3])
+            {
+                // Game ends
+                gameEnded = true;
+
+                // Highlight winning cells
+                btn01.Background = btn11.Background = btn21.Background = Brushes.DarkGreen;
+            }
+
+            // Row 3
+            if (currentGameState[6] != FieldSign.Free && (currentGameState[6] & currentGameState[7] & currentGameState[8]) == currentGameState[6])
+            {
+                // Game ends
+                gameEnded = true;
+
+                // Highlight winning cells
+                btn02.Background = btn12.Background = btn22.Background = Brushes.DarkGreen;
+            }
+            #endregion
+
+            #region Vertical Wins
+            // Checks for vertical wins
+            // Column 0
+            if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[3] & currentGameState[6]) == currentGameState[0])
+            {
+                // Game ends
+                gameEnded = true;
+
+                // Highlight winning cells
+                btn00.Background = btn01.Background = btn02.Background = Brushes.DarkGreen;
+            }
+
+            // Column 1
+            if (currentGameState[1] != FieldSign.Free && (currentGameState[1] & currentGameState[4] & currentGameState[7]) == currentGameState[1])
+            {
+                // Game ends
+                gameEnded = true;
+
+                // Highlight winning cells
+                btn10.Background = btn11.Background = btn12.Background = Brushes.DarkGreen;
+            }
+
+            // Column 2
+            if (currentGameState[2] != FieldSign.Free && (currentGameState[2] & currentGameState[5] & currentGameState[8]) == currentGameState[2])
+            {
+                // Game ends
+                gameEnded = true;
+
+                // Highlight winning cells
+                btn20.Background = btn21.Background = btn22.Background = Brushes.DarkGreen;
+            }
+            #endregion
+
+            #region Across Wins
+            // Checks for across wins
+            // upper left to bottom right
+            if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[4] & currentGameState[8]) == currentGameState[0])
+            {
+                // Game ends
+                gameEnded = true;
+
+                // Highlight winning cells
+                btn00.Background = btn11.Background = btn22.Background = Brushes.DarkGreen;
+            }
+            // bottom left to upper right
+            if (currentGameState[2] != FieldSign.Free && (currentGameState[2] & currentGameState[4] & currentGameState[6]) == currentGameState[2])
+            {
+                // Game ends
+                gameEnded = true;
+
+                // Highlight winning cells
+                btn02.Background = btn11.Background = btn20.Background = Brushes.DarkGreen;
+            }
+            #endregion
+
+            // check for no winner and full board
+            if (!currentGameState.Any(field => field == FieldSign.Free))
+            {
+                // Game ends
+                gameEnded = true;
+
+                // Turn all cells grey
+                playground.Children.Cast<Button>().ToList().ForEach(button =>
+                { 
+                    button.Background = Brushes.Gray;
+                });
+            }
         }
         #endregion
     }
