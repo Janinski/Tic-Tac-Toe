@@ -8,7 +8,7 @@ namespace Tic_Tac_Toe
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TwoPlayerModeWindow : Window
     {
         #region Variables
         /// <summary>
@@ -32,7 +32,7 @@ namespace Tic_Tac_Toe
         /// <summary>
         /// Default constructor
         /// </summary>
-        public MainWindow()
+        public TwoPlayerModeWindow()
         {
             InitializeComponent();
 
@@ -133,6 +133,7 @@ namespace Tic_Tac_Toe
 
                 // Highlight winning cells
                 btn00.Background = btn10.Background = btn20.Background = Brushes.DarkGreen;
+                return;
             }
 
             // Row 2
@@ -143,6 +144,7 @@ namespace Tic_Tac_Toe
 
                 // Highlight winning cells
                 btn01.Background = btn11.Background = btn21.Background = Brushes.DarkGreen;
+                return;
             }
 
             // Row 3
@@ -153,6 +155,7 @@ namespace Tic_Tac_Toe
 
                 // Highlight winning cells
                 btn02.Background = btn12.Background = btn22.Background = Brushes.DarkGreen;
+                return;
             }
             #endregion
 
@@ -166,6 +169,7 @@ namespace Tic_Tac_Toe
 
                 // Highlight winning cells
                 btn00.Background = btn01.Background = btn02.Background = Brushes.DarkGreen;
+                return;
             }
 
             // Column 1
@@ -176,6 +180,7 @@ namespace Tic_Tac_Toe
 
                 // Highlight winning cells
                 btn10.Background = btn11.Background = btn12.Background = Brushes.DarkGreen;
+                return;
             }
 
             // Column 2
@@ -186,6 +191,7 @@ namespace Tic_Tac_Toe
 
                 // Highlight winning cells
                 btn20.Background = btn21.Background = btn22.Background = Brushes.DarkGreen;
+                return;
             }
             #endregion
 
@@ -199,6 +205,7 @@ namespace Tic_Tac_Toe
 
                 // Highlight winning cells
                 btn00.Background = btn11.Background = btn22.Background = Brushes.DarkGreen;
+                return;
             }
             // bottom left to upper right
             if (currentGameState[2] != FieldSign.Free && (currentGameState[2] & currentGameState[4] & currentGameState[6]) == currentGameState[2])
@@ -208,6 +215,7 @@ namespace Tic_Tac_Toe
 
                 // Highlight winning cells
                 btn02.Background = btn11.Background = btn20.Background = Brushes.DarkGreen;
+                return;
             }
             #endregion
 
