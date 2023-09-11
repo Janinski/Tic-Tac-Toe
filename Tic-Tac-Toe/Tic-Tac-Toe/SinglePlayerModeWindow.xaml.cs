@@ -1,14 +1,26 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace Tic_Tac_Toe
 {
     /// <summary>
-    /// Interaction logic for TwoPlayerModeWindow.xaml
+    /// Interaktionslogik für SinglePlayerModeWindow.xaml
     /// </summary>
-    public partial class TwoPlayerModeWindow : Window
+    public partial class SinglePlayerModeWindow : Window
     {
         #region Variables
         /// <summary>
@@ -17,9 +29,9 @@ namespace Tic_Tac_Toe
         private FieldSign[] currentGameState;
 
         /// <summary>
-        /// True if it's player1's turn (x)
+        /// Contains random number to set Circle on the field with this index
         /// </summary>
-        private bool player1Turn;
+        private int indexForCircle;
 
         /// <summary>
         /// True if the game has ended
@@ -32,7 +44,7 @@ namespace Tic_Tac_Toe
         /// <summary>
         /// Default constructor
         /// </summary>
-        public TwoPlayerModeWindow()
+        public SinglePlayerModeWindow()
         {
             InitializeComponent();
 
@@ -48,13 +60,10 @@ namespace Tic_Tac_Toe
         {
             // Create a new blanc array of free cells
             currentGameState = new FieldSign[9];
-            for(int i = 0; i < currentGameState.Length; i++)
+            for (int i = 0; i < currentGameState.Length; i++)
             {
                 currentGameState[i] = FieldSign.Free;
             }
-
-            // Player1 starts the game
-            player1Turn = true;
 
             // Iterate every cell (button) of the grid
             playground.Children.Cast<Button>().ToList().ForEach(button =>
@@ -73,7 +82,7 @@ namespace Tic_Tac_Toe
         /// </summary>
         /// <param name="sender"> The clicked button (cell) </param>
         /// <param name="e"> The events of the click </param>
-        private void btn_Click(object sender, RoutedEventArgs e)
+        protected async void btn_Click(object sender, RoutedEventArgs e)
         {
             // Start a new game on the click after it finished
             if (gameEnded)
@@ -92,30 +101,56 @@ namespace Tic_Tac_Toe
             int index = column + (row * 3);
 
             // Don't do anything if the cell has already a sign in it
-            if(currentGameState[index] != FieldSign.Free)
+            if (currentGameState[index] != FieldSign.Free)
             {
                 return;
             }
 
-            // Set the cell's sign based on which players turn it is
-            currentGameState[index] = player1Turn? FieldSign.Cross : FieldSign.Circle;
+            // Set the cell's sign
+            currentGameState[index] = FieldSign.Cross;
 
-            // Set button text
-            button.Content = player1Turn ? "X" : "O";
+            // Set button text and color
+            button.Content = "X";
+            button.Foreground = Brushes.LightGreen;
 
-            // Change circle fields to rosa and cross fields to blue
-            if (!player1Turn)
+            // Checks field for a winner
+            CheckForAWinner();
+
+            if(!gameEnded)
             {
-                button.Foreground = Brushes.LightPink;
+                // Bot is player2 and sets a random circle after 1s
+                await Task.Delay(1000);
+                SetCircle();
             }
-            else
+        }
+
+        /// <summary>
+        /// Bot is player2 and sets a random cirlce
+        /// </summary>
+        private void SetCircle()
+        {
+            // List of all fields
+            List<Button> fields = new List<Button>
+                {
+                    btn00, btn10, btn20, btn01, btn11, btn21, btn02, btn12, btn22
+                };
+
+            // Generate random index to set a circle on this field
+            do
             {
-                button.Foreground = Brushes.LightGreen;
+                Random rnd = new Random();
+                indexForCircle = rnd.Next(9);
+            } while (currentGameState[indexForCircle] != FieldSign.Free);
+
+            // Set Circle on the random free field after 
+            if (currentGameState[indexForCircle] == FieldSign.Free)
+            {
+                currentGameState[indexForCircle] = FieldSign.Circle;
+                fields[indexForCircle].Content = "O";
+                fields[indexForCircle].Foreground = Brushes.LightPink;
             }
 
-            // Toggle the players turns
-            player1Turn ^= true;
-
+            // Checks field for a winner
             CheckForAWinner();
         }
 
@@ -127,7 +162,8 @@ namespace Tic_Tac_Toe
             #region Horizontal Wins
             // Checks for hotizontal wins
             // Row 0
-            if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[1] & currentGameState[2]) == currentGameState[0]){
+            if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[1] & currentGameState[2]) == currentGameState[0])
+            {
                 // Game ends
                 gameEnded = true;
 
@@ -227,7 +263,7 @@ namespace Tic_Tac_Toe
 
                 // Turn all cells grey
                 playground.Children.Cast<Button>().ToList().ForEach(button =>
-                { 
+                {
                     button.Background = Brushes.Gray;
                 });
             }
