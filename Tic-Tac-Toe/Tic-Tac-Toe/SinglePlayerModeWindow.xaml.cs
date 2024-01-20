@@ -135,6 +135,10 @@ namespace Tic_Tac_Toe
                     btn00, btn10, btn20, btn01, btn11, btn21, btn02, btn12, btn22
                 };
 
+            // copy of current board
+            // FieldSign[] copy = currentGameState.Select(a => (FieldSign)a.Clone()).ToArray();
+
+
             // Generate random index to set a circle on this field
             do
             {
@@ -172,7 +176,7 @@ namespace Tic_Tac_Toe
                 return;
             }
 
-            // Row 2
+            // Row 1
             if (currentGameState[3] != FieldSign.Free && (currentGameState[3] & currentGameState[4] & currentGameState[5]) == currentGameState[3])
             {
                 // Game ends
@@ -183,7 +187,7 @@ namespace Tic_Tac_Toe
                 return;
             }
 
-            // Row 3
+            // Row 2
             if (currentGameState[6] != FieldSign.Free && (currentGameState[6] & currentGameState[7] & currentGameState[8]) == currentGameState[6])
             {
                 // Game ends
