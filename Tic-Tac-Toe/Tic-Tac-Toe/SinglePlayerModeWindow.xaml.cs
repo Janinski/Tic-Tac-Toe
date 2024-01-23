@@ -38,6 +38,11 @@ namespace Tic_Tac_Toe
         /// </summary>
         private bool gameEnded;
 
+        /// <summary>
+        /// True if bot finds a winning field
+        /// </summary>
+        private bool winnerFound;
+
         #endregion
 
         #region Constructor
@@ -114,7 +119,7 @@ namespace Tic_Tac_Toe
             button.Foreground = Brushes.LightGreen;
 
             // Checks field for a winner
-            CheckForAWinner();
+            CheckForAWinner(currentGameState);
 
             if(!gameEnded)
             {
@@ -129,47 +134,95 @@ namespace Tic_Tac_Toe
         /// </summary>
         private void SetCircle()
         {
+            // set to default because there is no winning field found yet, just started to search it
+            winnerFound = false;
+
             // List of all fields
             List<Button> fields = new List<Button>
                 {
                     btn00, btn10, btn20, btn01, btn11, btn21, btn02, btn12, btn22
                 };
-
+            
             // copy of current board
-            // FieldSign[] copy = currentGameState.Select(a => (FieldSign)a.Clone()).ToArray();
-
-
-            // Generate random index to set a circle on this field
-            do
+            FieldSign[] copy = new FieldSign[9];
+            for (int i = 0; i < 9; i++)
             {
-                Random rnd = new Random();
-                indexForCircle = rnd.Next(9);
-            } while (currentGameState[indexForCircle] != FieldSign.Free);
-
-            // Set Circle on the random free field after 
-            if (currentGameState[indexForCircle] == FieldSign.Free)
-            {
-                currentGameState[indexForCircle] = FieldSign.Circle;
-                fields[indexForCircle].Content = "O";
-                fields[indexForCircle].Foreground = Brushes.LightPink;
+                copy[i] = currentGameState[i];
             }
 
-            // Checks field for a winner
-            CheckForAWinner();
+            // go trough possible fields and look if there is a possible win
+            for (int i = 0; i < 9; i++)
+            {
+                if (copy[i] == FieldSign.Free)
+                {
+                    copy[i] = FieldSign.Circle;
+                    fields[i].Content = "O";
+                    fields[i].Foreground = Brushes.LightPink;
+
+                    // Checks field for a winner
+                    CheckForAWinner(copy);
+
+                    if (winnerFound)
+                    {
+                        indexForCircle = i;
+                        break;
+                    }
+                    else
+                    {
+                        copy[i] = FieldSign.Free;
+                        fields[i].Content = string.Empty;
+                        fields[i].Background = Brushes.White;
+                    }
+                }
+            }
+
+            // if winning field found on copy, then place circle on that field in current real game
+            if (winnerFound)
+            {
+                if (currentGameState[indexForCircle] == FieldSign.Free)
+                {
+                    currentGameState[indexForCircle] = FieldSign.Circle;
+                    fields[indexForCircle].Content = "O";
+                    fields[indexForCircle].Foreground = Brushes.LightPink;
+                }
+            }
+
+            // if there is no winning field in copy, then place circle random
+            if (!winnerFound)
+            {
+                // Generate random index to set a circle on this field
+                do
+                {
+                    Random rnd = new Random();
+                    indexForCircle = rnd.Next(9);
+                } while (currentGameState[indexForCircle] != FieldSign.Free);
+
+                // Set Circle on the random free field after 
+                if (currentGameState[indexForCircle] == FieldSign.Free)
+                {
+                    currentGameState[indexForCircle] = FieldSign.Circle;
+                    fields[indexForCircle].Content = "O";
+                    fields[indexForCircle].Foreground = Brushes.LightPink;
+                }
+            }
+            CheckForAWinner(currentGameState);
         }
 
         /// <summary>
         /// Checks if there is a winner of a three line straight
         /// </summary>
-        private void CheckForAWinner()
+        private void CheckForAWinner(FieldSign[] gameState)
         {
             #region Horizontal Wins
             // Checks for hotizontal wins
             // Row 0
-            if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[1] & currentGameState[2]) == currentGameState[0])
+            if (gameState[0] != FieldSign.Free && (gameState[0] & gameState[1] & gameState[2]) == gameState[0])
             {
                 // Game ends
                 gameEnded = true;
+
+                // winner found
+                winnerFound = true;
 
                 // Highlight winning cells
                 btn00.Background = btn10.Background = btn20.Background = Brushes.DarkGreen;
@@ -177,10 +230,13 @@ namespace Tic_Tac_Toe
             }
 
             // Row 1
-            if (currentGameState[3] != FieldSign.Free && (currentGameState[3] & currentGameState[4] & currentGameState[5]) == currentGameState[3])
+            if (gameState[3] != FieldSign.Free && (gameState[3] & gameState[4] & gameState[5]) == gameState[3])
             {
                 // Game ends
                 gameEnded = true;
+
+                // winner found
+                winnerFound = true;
 
                 // Highlight winning cells
                 btn01.Background = btn11.Background = btn21.Background = Brushes.DarkGreen;
@@ -188,10 +244,13 @@ namespace Tic_Tac_Toe
             }
 
             // Row 2
-            if (currentGameState[6] != FieldSign.Free && (currentGameState[6] & currentGameState[7] & currentGameState[8]) == currentGameState[6])
+            if (gameState[6] != FieldSign.Free && (gameState[6] & gameState[7] & gameState[8]) == gameState[6])
             {
                 // Game ends
                 gameEnded = true;
+
+                // winner found
+                winnerFound = true;
 
                 // Highlight winning cells
                 btn02.Background = btn12.Background = btn22.Background = Brushes.DarkGreen;
@@ -202,10 +261,13 @@ namespace Tic_Tac_Toe
             #region Vertical Wins
             // Checks for vertical wins
             // Column 0
-            if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[3] & currentGameState[6]) == currentGameState[0])
+            if (gameState[0] != FieldSign.Free && (gameState[0] & gameState[3] & gameState[6]) == gameState[0])
             {
                 // Game ends
                 gameEnded = true;
+
+                // winner found
+                winnerFound = true;
 
                 // Highlight winning cells
                 btn00.Background = btn01.Background = btn02.Background = Brushes.DarkGreen;
@@ -213,10 +275,13 @@ namespace Tic_Tac_Toe
             }
 
             // Column 1
-            if (currentGameState[1] != FieldSign.Free && (currentGameState[1] & currentGameState[4] & currentGameState[7]) == currentGameState[1])
+            if (gameState[1] != FieldSign.Free && (gameState[1] & gameState[4] & gameState[7]) == gameState[1])
             {
                 // Game ends
                 gameEnded = true;
+
+                // winner found
+                winnerFound = true;
 
                 // Highlight winning cells
                 btn10.Background = btn11.Background = btn12.Background = Brushes.DarkGreen;
@@ -224,10 +289,13 @@ namespace Tic_Tac_Toe
             }
 
             // Column 2
-            if (currentGameState[2] != FieldSign.Free && (currentGameState[2] & currentGameState[5] & currentGameState[8]) == currentGameState[2])
+            if (gameState[2] != FieldSign.Free && (gameState[2] & gameState[5] & gameState[8]) == gameState[2])
             {
                 // Game ends
                 gameEnded = true;
+
+                // winner found
+                winnerFound = true;
 
                 // Highlight winning cells
                 btn20.Background = btn21.Background = btn22.Background = Brushes.DarkGreen;
@@ -238,20 +306,26 @@ namespace Tic_Tac_Toe
             #region Across Wins
             // Checks for across wins
             // upper left to bottom right
-            if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[4] & currentGameState[8]) == currentGameState[0])
+            if (gameState[0] != FieldSign.Free && (gameState[0] & gameState[4] & gameState[8]) == gameState[0])
             {
                 // Game ends
                 gameEnded = true;
+
+                // winner found
+                winnerFound = true;
 
                 // Highlight winning cells
                 btn00.Background = btn11.Background = btn22.Background = Brushes.DarkGreen;
                 return;
             }
             // bottom left to upper right
-            if (currentGameState[2] != FieldSign.Free && (currentGameState[2] & currentGameState[4] & currentGameState[6]) == currentGameState[2])
+            if (gameState[2] != FieldSign.Free && (gameState[2] & gameState[4] & gameState[6]) == gameState[2])
             {
                 // Game ends
                 gameEnded = true;
+
+                // winner found
+                winnerFound = true;
 
                 // Highlight winning cells
                 btn02.Background = btn11.Background = btn20.Background = Brushes.DarkGreen;
@@ -260,7 +334,7 @@ namespace Tic_Tac_Toe
             #endregion
 
             // check for no winner and full board
-            if (!currentGameState.Any(field => field == FieldSign.Free))
+            if (!gameState.Any(field => field == FieldSign.Free))
             {
                 // Game ends
                 gameEnded = true;
