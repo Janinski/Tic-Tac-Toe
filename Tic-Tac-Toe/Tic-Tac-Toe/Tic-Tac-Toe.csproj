@@ -9,7 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Ressources\PixelifySans-VariableFont_wght.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Ressources\PixelifySans-VariableFont_wght.ttf" />
   </ItemGroup>
 
 </Project>

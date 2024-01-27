@@ -8,9 +8,10 @@
         Title="Tic Tac Toe" Height="500" Width="500">
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="Background" Value="LightBlue"></Setter>
             <Setter Property="BorderThickness" Value="0.5"></Setter>
             <Setter Property="FontSize" Value="70"></Setter>
+            <Setter Property="FontFamily" Value="\Ressources\#Pixelify Sans"/>
         </Style>
     </Window.Resources>
     <Grid x:Name="playground">

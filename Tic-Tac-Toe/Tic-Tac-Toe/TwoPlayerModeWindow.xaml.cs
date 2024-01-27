@@ -26,6 +26,11 @@ namespace Tic_Tac_Toe
         /// </summary>
         private bool gameEnded;
 
+        /// <summary>
+        /// True if player (X) won the game, false if bot (O) won the game
+        /// </summary>
+        private bool hasWon;
+
         #endregion
 
         #region Constructor
@@ -61,7 +66,7 @@ namespace Tic_Tac_Toe
             {
                 // Clear every cell and set default design of field
                 button.Content = string.Empty;
-                button.Background = Brushes.White;
+                button.Background = Brushes.LightBlue;
             });
 
             // Make sure game starts and isn't finished yet
@@ -75,11 +80,12 @@ namespace Tic_Tac_Toe
         /// <param name="e"> The events of the click </param>
         private void btn_Click(object sender, RoutedEventArgs e)
         {
-            // Start a new game on the click after it finished
+            // Show WinWindow on the click after it finished
             if (gameEnded)
             {
-                StartNewGame();
-                return;
+                WinWindow newWinWindow = new WinWindow("two", hasWon);
+                newWinWindow.Show();
+                this.Close();
             }
 
             // Cast sender to a button
@@ -106,11 +112,11 @@ namespace Tic_Tac_Toe
             // Change circle fields to rosa and cross fields to blue
             if (!player1Turn)
             {
-                button.Foreground = Brushes.LightPink;
+                button.Foreground = Brushes.HotPink;
             }
             else
             {
-                button.Foreground = Brushes.LightGreen;
+                button.Foreground = Brushes.DarkBlue;
             }
 
             // Toggle the players turns
@@ -128,6 +134,9 @@ namespace Tic_Tac_Toe
             // Checks for hotizontal wins
             // Row 0
             if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[1] & currentGameState[2]) == currentGameState[0]){
+                // checks if the player (X) is the winner
+                if (currentGameState[0] == FieldSign.Cross) { hasWon = true; } else { hasWon = false; }
+                
                 // Game ends
                 gameEnded = true;
 
@@ -139,6 +148,9 @@ namespace Tic_Tac_Toe
             // Row 1
             if (currentGameState[3] != FieldSign.Free && (currentGameState[3] & currentGameState[4] & currentGameState[5]) == currentGameState[3])
             {
+                // checks if the player (X) is the winner
+                if (currentGameState[3] == FieldSign.Cross) { hasWon = true; } else { hasWon = false; }
+
                 // Game ends
                 gameEnded = true;
 
@@ -150,6 +162,9 @@ namespace Tic_Tac_Toe
             // Row 2
             if (currentGameState[6] != FieldSign.Free && (currentGameState[6] & currentGameState[7] & currentGameState[8]) == currentGameState[6])
             {
+                // checks if the player (X) is the winner
+                if (currentGameState[6] == FieldSign.Cross) { hasWon = true; } else { hasWon = false; }
+
                 // Game ends
                 gameEnded = true;
 
@@ -164,6 +179,9 @@ namespace Tic_Tac_Toe
             // Column 0
             if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[3] & currentGameState[6]) == currentGameState[0])
             {
+                // checks if the player (X) is the winner
+                if (currentGameState[0] == FieldSign.Cross) { hasWon = true; } else { hasWon = false; }
+
                 // Game ends
                 gameEnded = true;
 
@@ -175,6 +193,9 @@ namespace Tic_Tac_Toe
             // Column 1
             if (currentGameState[1] != FieldSign.Free && (currentGameState[1] & currentGameState[4] & currentGameState[7]) == currentGameState[1])
             {
+                // checks if the player (X) is the winner
+                if (currentGameState[1] == FieldSign.Cross) { hasWon = true; } else { hasWon = false; }
+
                 // Game ends
                 gameEnded = true;
 
@@ -186,6 +207,9 @@ namespace Tic_Tac_Toe
             // Column 2
             if (currentGameState[2] != FieldSign.Free && (currentGameState[2] & currentGameState[5] & currentGameState[8]) == currentGameState[2])
             {
+                // checks if the player (X) is the winner
+                if (currentGameState[2] == FieldSign.Cross) { hasWon = true; } else { hasWon = false; }
+
                 // Game ends
                 gameEnded = true;
 
@@ -200,6 +224,9 @@ namespace Tic_Tac_Toe
             // upper left to bottom right
             if (currentGameState[0] != FieldSign.Free && (currentGameState[0] & currentGameState[4] & currentGameState[8]) == currentGameState[0])
             {
+                // checks if the player (X) is the winner
+                if (currentGameState[0] == FieldSign.Cross) { hasWon = true; } else { hasWon = false; }
+
                 // Game ends
                 gameEnded = true;
 
@@ -210,6 +237,9 @@ namespace Tic_Tac_Toe
             // bottom left to upper right
             if (currentGameState[2] != FieldSign.Free && (currentGameState[2] & currentGameState[4] & currentGameState[6]) == currentGameState[2])
             {
+                // checks if the player (X) is the winner
+                if (currentGameState[2] == FieldSign.Cross) { hasWon = true; } else { hasWon = false; }
+
                 // Game ends
                 gameEnded = true;
 
@@ -222,6 +252,9 @@ namespace Tic_Tac_Toe
             // check for no winner and full board
             if (!currentGameState.Any(field => field == FieldSign.Free))
             {
+                // player (X) lost game
+                hasWon = false;
+
                 // Game ends
                 gameEnded = true;
 
