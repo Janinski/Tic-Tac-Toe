@@ -38,14 +38,16 @@ namespace Tic_Tac_Toe
             InitializeComponent();
             this.mode = mode;
             this.hasWon = hasWon;
-            if (hasWon)
+            if(mode == "two")
             {
-                this.TitleText.Text = "Congratulations!";
+                if (hasWon){ this.TitleText.Text = "Congratulations \n Player X!"; }else{ this.TitleText.Text = "Congratulations \n Player O!"; }
+
             }
             else
             {
-                this.TitleText.Text = "Maybe next time...";
+                if (hasWon){this.TitleText.Text = "Congratulations!";}else{this.TitleText.Text = "Maybe next time...";}
             }
+            
         }
         #endregion
 
