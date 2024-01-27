@@ -176,6 +176,35 @@ namespace Tic_Tac_Toe
                 }
             }
 
+            // go trough possible fields and look if there is a possible win for the opponent
+            if(!winnerFound)
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    if (copy[i] == FieldSign.Free)
+                    {
+                        copy[i] = FieldSign.Cross;
+                        fields[i].Content = "X";
+                        fields[i].Foreground = Brushes.LightGreen;
+
+                        // Checks field for a winner
+                        CheckForAWinner(copy);
+
+                        if (winnerFound)
+                        {
+                            indexForCircle = i;
+                            break;
+                        }
+                        else
+                        {
+                            copy[i] = FieldSign.Free;
+                            fields[i].Content = string.Empty;
+                            fields[i].Background = Brushes.White;
+                        }
+                    }
+                }
+            }
+
             // if winning field found on copy, then place circle on that field in current real game
             if (winnerFound)
             {
@@ -205,6 +234,7 @@ namespace Tic_Tac_Toe
                     fields[indexForCircle].Foreground = Brushes.LightPink;
                 }
             }
+
             CheckForAWinner(currentGameState);
         }
 
@@ -218,42 +248,57 @@ namespace Tic_Tac_Toe
             // Row 0
             if (gameState[0] != FieldSign.Free && (gameState[0] & gameState[1] & gameState[2]) == gameState[0])
             {
-                // Game ends
-                gameEnded = true;
+                if(gameState == currentGameState)
+                {
+                    // Game ends
+                    gameEnded = true;
+
+                    // Highlight winning cells
+                    btn00.Background = btn10.Background = btn20.Background = Brushes.DarkGreen;
+                }
+                
 
                 // winner found
                 winnerFound = true;
 
-                // Highlight winning cells
-                btn00.Background = btn10.Background = btn20.Background = Brushes.DarkGreen;
                 return;
             }
 
             // Row 1
             if (gameState[3] != FieldSign.Free && (gameState[3] & gameState[4] & gameState[5]) == gameState[3])
             {
-                // Game ends
-                gameEnded = true;
+                if (gameState == currentGameState)
+                {
+                    // Game ends
+                    gameEnded = true;
+
+                    // Highlight winning cells
+                    btn01.Background = btn11.Background = btn21.Background = Brushes.DarkGreen;
+                }
+
 
                 // winner found
                 winnerFound = true;
 
-                // Highlight winning cells
-                btn01.Background = btn11.Background = btn21.Background = Brushes.DarkGreen;
                 return;
             }
 
             // Row 2
             if (gameState[6] != FieldSign.Free && (gameState[6] & gameState[7] & gameState[8]) == gameState[6])
             {
-                // Game ends
-                gameEnded = true;
+                if (gameState == currentGameState)
+                {
+                    // Game ends
+                    gameEnded = true;
+
+                    // Highlight winning cells
+                    btn02.Background = btn12.Background = btn22.Background = Brushes.DarkGreen;
+                }
+
 
                 // winner found
                 winnerFound = true;
 
-                // Highlight winning cells
-                btn02.Background = btn12.Background = btn22.Background = Brushes.DarkGreen;
                 return;
             }
             #endregion
@@ -263,42 +308,57 @@ namespace Tic_Tac_Toe
             // Column 0
             if (gameState[0] != FieldSign.Free && (gameState[0] & gameState[3] & gameState[6]) == gameState[0])
             {
-                // Game ends
-                gameEnded = true;
+                if (gameState == currentGameState)
+                {
+                    // Game ends
+                    gameEnded = true;
+
+                    // Highlight winning cells
+                    btn00.Background = btn01.Background = btn02.Background = Brushes.DarkGreen;
+                }
+
 
                 // winner found
                 winnerFound = true;
 
-                // Highlight winning cells
-                btn00.Background = btn01.Background = btn02.Background = Brushes.DarkGreen;
                 return;
             }
 
             // Column 1
             if (gameState[1] != FieldSign.Free && (gameState[1] & gameState[4] & gameState[7]) == gameState[1])
             {
-                // Game ends
-                gameEnded = true;
+                if (gameState == currentGameState)
+                {
+                    // Game ends
+                    gameEnded = true;
+
+                    // Highlight winning cells
+                    btn10.Background = btn11.Background = btn12.Background = Brushes.DarkGreen;
+                }
+
 
                 // winner found
                 winnerFound = true;
 
-                // Highlight winning cells
-                btn10.Background = btn11.Background = btn12.Background = Brushes.DarkGreen;
                 return;
             }
 
             // Column 2
             if (gameState[2] != FieldSign.Free && (gameState[2] & gameState[5] & gameState[8]) == gameState[2])
             {
-                // Game ends
-                gameEnded = true;
+                if (gameState == currentGameState)
+                {
+                    // Game ends
+                    gameEnded = true;
+
+                    // Highlight winning cells
+                    btn20.Background = btn21.Background = btn22.Background = Brushes.DarkGreen;
+                }
+
 
                 // winner found
                 winnerFound = true;
 
-                // Highlight winning cells
-                btn20.Background = btn21.Background = btn22.Background = Brushes.DarkGreen;
                 return;
             }
             #endregion
@@ -308,27 +368,37 @@ namespace Tic_Tac_Toe
             // upper left to bottom right
             if (gameState[0] != FieldSign.Free && (gameState[0] & gameState[4] & gameState[8]) == gameState[0])
             {
-                // Game ends
-                gameEnded = true;
+                if (gameState == currentGameState)
+                {
+                    // Game ends
+                    gameEnded = true;
+
+                    // Highlight winning cells
+                    btn00.Background = btn11.Background = btn22.Background = Brushes.DarkGreen;
+                }
+
 
                 // winner found
                 winnerFound = true;
 
-                // Highlight winning cells
-                btn00.Background = btn11.Background = btn22.Background = Brushes.DarkGreen;
                 return;
             }
             // bottom left to upper right
             if (gameState[2] != FieldSign.Free && (gameState[2] & gameState[4] & gameState[6]) == gameState[2])
             {
-                // Game ends
-                gameEnded = true;
+                if (gameState == currentGameState)
+                {
+                    // Game ends
+                    gameEnded = true;
+
+                    // Highlight winning cells
+                    btn02.Background = btn11.Background = btn20.Background = Brushes.DarkGreen;
+                }
+
 
                 // winner found
                 winnerFound = true;
 
-                // Highlight winning cells
-                btn02.Background = btn11.Background = btn20.Background = Brushes.DarkGreen;
                 return;
             }
             #endregion
