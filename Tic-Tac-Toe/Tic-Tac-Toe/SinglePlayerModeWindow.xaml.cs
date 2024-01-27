@@ -96,6 +96,9 @@ namespace Tic_Tac_Toe
                 return;
             }
 
+            // forbid user to click again, so bot is making its move first
+            playground.IsHitTestVisible = false;
+
             // Cast sender to a button
             Button button = (Button)sender;
 
@@ -108,6 +111,8 @@ namespace Tic_Tac_Toe
             // Don't do anything if the cell has already a sign in it
             if (currentGameState[index] != FieldSign.Free)
             {
+                // allow user to chose another field
+                playground.IsHitTestVisible = true;
                 return;
             }
 
@@ -126,6 +131,14 @@ namespace Tic_Tac_Toe
                 // Bot is player2 and sets a random circle after 1s
                 await Task.Delay(1000);
                 SetCircle();
+
+                // allow user to click again on the field after bot has set its move
+                playground.IsHitTestVisible = true;
+            }
+            else
+            {
+                // allow user to click again on the field to start a new game
+                playground.IsHitTestVisible = true;
             }
         }
 
